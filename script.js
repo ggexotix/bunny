@@ -11,18 +11,18 @@ const run = setInterval(() => {
   // jump motion
   bunny.style.bottom = 18 + Math.sin(pos / 35) * 4 + "%";
 
-  // screen bounce
   if (pos > window.innerWidth - 150) direction = -1;
   if (pos < -150) direction = 1;
 }, 30);
 
-// stop bunny and show gift
+// stop bunny (but do NOT auto-open gift)
 setTimeout(() => {
   clearInterval(run);
   bunny.style.left = "50%";
   bunny.style.transform = "translateX(-50%)";
-
-  setTimeout(() => {
-    gift.style.transform = "translate(-50%, -50%) scale(1)";
-  }, 900);
 }, 7000);
+
+// ✅ CLICK TO OPEN LETTER
+gift.addEventListener("click", () => {
+  gift.classList.add("show");
+});
