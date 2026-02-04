@@ -1,76 +1,28 @@
-/* RESET */
-body {
-  margin: 0;
-  overflow: hidden;
-  font-family: "Segoe UI", sans-serif;
-}
+const bunny = document.getElementById("bunny");
+const gift = document.getElementById("gift");
 
-/* JUNGLE BACKGROUND */
-.jungle {
-  position: fixed;
-  inset: 0;
-  background:
-    linear-gradient(to top, #4caf50 30%, #8bd17c 60%, #ccefff 100%);
-}
+let pos = -150;
+let direction = 1;
 
-/* trees */
-.jungle::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 15% 65%, #2f6b3c 40%, transparent 41%),
-    radial-gradient(circle at 40% 70%, #347a45 45%, transparent 46%),
-    radial-gradient(circle at 65% 65%, #2c5f38 42%, transparent 43%),
-    radial-gradient(circle at 85% 70%, #2f6b3c 40%, transparent 41%);
-  opacity: 0.45;
-}
+const run = setInterval(() => {
+  pos += 6 * direction;
+  bunny.style.left = pos + "px";
 
-/* ground */
-.jungle::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 35%;
-  background: linear-gradient(to top, #3e7f35, #5faa4f);
-}
+  // jump motion
+  bunny.style.bottom = 18 + Math.sin(pos / 35) * 4 + "%";
 
-/* BUNNY */
-#bunny {
-  position: fixed;
-  bottom: 18%;
-  left: -150px;
-  width: 120px;
-  z-index: 10;
-}
+  // screen bounce
+  if (pos > window.innerWidth - 150) direction = -1;
+  if (pos < -150) direction = 1;
+}, 30);
 
-#bunny img {
-  width: 100%;
-  animation: hop 0.6s infinite alternate;
-}
+// stop bunny and show gift
+setTimeout(() => {
+  clearInterval(run);
+  bunny.style.left = "50%";
+  bunny.style.transform = "translateX(-50%)";
 
-@keyframes hop {
-  from { transform: translateY(0); }
-  to { transform: translateY(-22px); }
-}
-
-/* GIFT */
-#gift {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  background: #ffd6e4;
-  padding: 26px 34px;
-  border-radius: 22px;
-  font-size: 22px;
-  font-weight: bold;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.35);
-  transition: 0.7s ease;
-  z-index: 20;
-  text-align: center;
-}
-#gift.show {
-    transform : translate(-50%, -50%) scale(1);
-}
+  setTimeout(() => {
+    gift.style.transform = "translate(-50%, -50%) scale(1)";
+  }, 900);
+}, 7000);
